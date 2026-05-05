@@ -1,0 +1,254 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="barvicky.css">
+
+</head>
+
+<body>
+<header>
+    <div class="logo"><img src="artworks-b5vsGeHUiWgEkoyB-ohwNzg-t500x500.jpg" style="width:6rem;height:6rem" alt="logo"></div>
+    <img src="monster.jpg" style="width:6rem;height:6rem" alt="best monster">
+</header>
+<div class="layout">
+    <div class="sidebar">
+        <div class="search-box"><input type="text" id="searchInput" placeholder="search course, teacher..."></div>
+        <div id="courseList"></div>
+    </div>
+    <div class="main">
+        <div class="schedule-toolbar">
+            <span class="stat-pill" id="selectedCount">0 selected</span>
+            <div class="legend">
+                <div class="legend-item"><div class="legend-lec"></div>přednáška</div>
+                <div class="legend-item"><div class="legend-sem"></div>cviko</div>
+            </div>
+            <button class="btn-clear" onclick="clearAll()">clear all</button>
+        </div>
+        <div class="grid-wrap"><div id="scheduleGrid"></div></div>
+    </div>
+</div>
+
+<script>
+    const TIME_SLOTS = ['7:25','8:15','9:05','9:55','10:45','11:35','12:25','13:15','14:05','14:55','15:45','16:35','17:25','18:15'];
+    const DAYS = ['Mon','Tue','Wed','Thu','Fri'];
+
+    const COURSES = [
+        {id:'KAL_OA2_C12',dept:'KAL/OA2',code:'KAL/OA2-C/12',type:'C',teacher:'IVP',day:'Mon',start:3,end:5,room:'J31'},
+        {id:'KAL_OA2_C10',dept:'KAL/OA2',code:'KAL/OA2-C/10',type:'C',teacher:'SOL',day:'Mon',start:6,end:8,room:'J6'},
+        {id:'KAL_OA2_C03',dept:'KAL/OA2',code:'KAL/OA2-C/03',type:'C',teacher:'SOL',day:'Mon',start:8,end:10,room:'J26'},
+        {id:'KAL_OA2_C02',dept:'KAL/OA2',code:'KAL/OA2-C/02',type:'C',teacher:'SOL',day:'Mon',start:10,end:12,room:'J27'},
+        {id:'KAL_OA2_C06',dept:'KAL/OA2',code:'KAL/OA2-C/06',type:'C',teacher:'SOL',day:'Tue',start:3,end:5,room:'J27'},
+        {id:'KAL_OA2_C05',dept:'KAL/OA2',code:'KAL/OA2-C/05',type:'C',teacher:'SOL',day:'Tue',start:5,end:7,room:'J27'},
+        {id:'KAL_OA2_C13',dept:'KAL/OA2',code:'KAL/OA2-C/13',type:'C',teacher:'IVP',day:'Wed',start:1,end:3,room:'J26'},
+        {id:'KAL_OA2_C11',dept:'KAL/OA2',code:'KAL/OA2-C/11',type:'C',teacher:'SOL',day:'Wed',start:5,end:7,room:'J12'},
+        {id:'KAL_OA2_C04',dept:'KAL/OA2',code:'KAL/OA2-C/04',type:'C',teacher:'SOL',day:'Wed',start:1,end:3,room:'J27'},
+        {id:'KAL_OA2_C01',dept:'KAL/OA2',code:'KAL/OA2-C/01',type:'C',teacher:'KAC',day:'Wed',start:5,end:7,room:'J6'},
+        {id:'KAL_OA2_C07',dept:'KAL/OA2',code:'KAL/OA2-C/07',type:'C',teacher:'SOL',day:'Thu',start:1,end:3,room:'J28'},
+        {id:'KAL_OA2_C08',dept:'KAL/OA2',code:'KAL/OA2-C/08',type:'C',teacher:'SOL',day:'Thu',start:3,end:5,room:'J28'},
+        {id:'KAL_OA2_C09',dept:'KAL/OA2',code:'KAL/OA2-C/09',type:'C',teacher:'SOL',day:'Thu',start:5,end:7,room:'J28'},
+        {id:'KIT_IOT_P01',dept:'KIT/IOT',code:'KIT/IOT-P/01',type:'P',teacher:'XUP',day:'Mon',start:5,end:7,room:'J1'},
+        {id:'KIT_IOT_C04',dept:'KIT/IOT',code:'KIT/IOT-C/04',type:'C',teacher:'MIL',day:'Tue',start:2,end:4,room:'J7'},
+        {id:'KIT_IOT_C01',dept:'KIT/IOT',code:'KIT/IOT-C/01',type:'C',teacher:'MIL',day:'Tue',start:6,end:8,room:'J7'},
+        {id:'KIT_IOT_C02',dept:'KIT/IOT',code:'KIT/IOT-C/02',type:'C',teacher:'MIL',day:'Tue',start:8,end:10,room:'J7'},
+        {id:'KIT_IOT_C03',dept:'KIT/IOT',code:'KIT/IOT-C/03',type:'C',teacher:'MIL',day:'Tue',start:10,end:12,room:'J7'},
+        {id:'KIT_IOT_C06',dept:'KIT/IOT',code:'KIT/IOT-C/06',type:'C',teacher:'MLS',day:'Wed',start:1,end:3,room:'J7'},
+        {id:'KIT_IOT_C07',dept:'KIT/IOT',code:'KIT/IOT-C/07',type:'C',teacher:'MLS',day:'Wed',start:2,end:4,room:'J7'},
+        {id:'KIT_IOT_C05',dept:'KIT/IOT',code:'KIT/IOT-C/05',type:'C',teacher:'MLS',day:'Wed',start:4,end:6,room:'J7'},
+        {id:'KIT_IOT_C08',dept:'KIT/IOT',code:'KIT/IOT-C/08',type:'C',teacher:'XUP',day:'Wed',start:6,end:8,room:'J7'},
+        {id:'KIT_IOT_C10',dept:'KIT/IOT',code:'KIT/IOT-C/10',type:'C',teacher:'XUP',day:'Wed',start:8,end:10,room:'J7'},
+        {id:'KIT_IOT_C11',dept:'KIT/IOT',code:'KIT/IOT-C/11',type:'C',teacher:'XUP',day:'Wed',start:10,end:12,room:'J7'},
+        {id:'KIT_IOT_C09',dept:'KIT/IOT',code:'KIT/IOT-C/09',type:'C',teacher:'XUP',day:'Thu',start:7,end:9,room:'J7'},
+        {id:'KIT_IOT_C12',dept:'KIT/IOT',code:'KIT/IOT-C/12',type:'C',teacher:'XUP',day:'Thu',start:9,end:11,room:'J7'},
+        {id:'KIT_PSIT2_P01',dept:'KIT/PSIT2',code:'KIT/PSIT2-P/01',type:'P',teacher:'SOB',day:'Mon',start:3,end:5,room:'J13'},
+        {id:'KIT_PSIT2_C04',dept:'KIT/PSIT2',code:'KIT/PSIT2-C/04',type:'C',teacher:'SOB',day:'Mon',start:6,end:8,room:'J7'},
+        {id:'KIT_PSIT2_C05',dept:'KIT/PSIT2',code:'KIT/PSIT2-C/05',type:'C',teacher:'SOB',day:'Mon',start:8,end:10,room:'J7'},
+        {id:'KIT_PSIT2_C02',dept:'KIT/PSIT2',code:'KIT/PSIT2-C/02',type:'C',teacher:'NEZ',day:'Thu',start:2,end:4,room:'J7'},
+        {id:'KIT_PSIT2_C01',dept:'KIT/PSIT2',code:'KIT/PSIT2-C/01',type:'C',teacher:'NEZ',day:'Thu',start:4,end:6,room:'J7'},
+        {id:'KIT_PSIT2_C03',dept:'KIT/PSIT2',code:'KIT/PSIT2-C/03',type:'C',teacher:'NEZ',day:'Thu',start:6,end:8,room:'J7'},
+        {id:'KIT_RIRP_P01',dept:'KIT/RIRP',code:'KIT/RIRP-P/01',type:'P',teacher:'HOJ',day:'Mon',start:9,end:11,room:'J12'},
+        {id:'KIT_RIRP_C02',dept:'KIT/RIRP',code:'KIT/RIRP-C/02',type:'C',teacher:'HOJ',day:'Tue',start:2,end:4,room:'J22'},
+        {id:'KIT_RIRP_C01',dept:'KIT/RIRP',code:'KIT/RIRP-C/01',type:'C',teacher:'HOJ',day:'Tue',start:4,end:6,room:'J22'},
+        {id:'KIT_RPRO_P01',dept:'KIT/RPRO',code:'KIT/RPRO-P/01',type:'P',teacher:'TUC',day:'Tue',start:1,end:3,room:'J13'},
+        {id:'KIT_RPRO_C01',dept:'KIT/RPRO',code:'KIT/RPRO-C/01',type:'C',teacher:'TUC, XOT',day:'Tue',start:3,end:5,room:'J2'},
+        {id:'KIT_RPRO_C04',dept:'KIT/RPRO',code:'KIT/RPRO-C/04',type:'C',teacher:'TUC, XOT',day:'Tue',start:6,end:8,room:'J15'},
+        {id:'KIT_RPRO_C03',dept:'KIT/RPRO',code:'KIT/RPRO-C/03',type:'C',teacher:'TUC, XOT',day:'Tue',start:8,end:10,room:'J15'},
+        {id:'KIT_RPRO_C02',dept:'KIT/RPRO',code:'KIT/RPRO-C/02',type:'C',teacher:'TUC, XOT',day:'Tue',start:10,end:12,room:'J15'},
+        {id:'KIT_TNPW2_C04',dept:'KIT/TNPW2',code:'KIT/TNPW2-C/04',type:'C',teacher:'XVO',day:'Mon',start:5,end:7,room:'J10'},
+        {id:'KIT_TNPW2_C07',dept:'KIT/TNPW2',code:'KIT/TNPW2-C/07',type:'C',teacher:'XVO',day:'Mon',start:11,end:13,room:'J10'},
+        {id:'KIT_TNPW2_C02',dept:'KIT/TNPW2',code:'KIT/TNPW2-C/02',type:'C',teacher:'PON',day:'Tue',start:1,end:3,room:'J8'},
+        {id:'KIT_TNPW2_C05',dept:'KIT/TNPW2',code:'KIT/TNPW2-C/05',type:'C',teacher:'XVO',day:'Tue',start:5,end:7,room:'J9'},
+        {id:'KIT_TNPW2_C06',dept:'KIT/TNPW2',code:'KIT/TNPW2-C/06',type:'C',teacher:'XVO',day:'Tue',start:9,end:11,room:'J20'},
+        {id:'KIT_TNPW2_C03',dept:'KIT/TNPW2',code:'KIT/TNPW2-C/03',type:'C',teacher:'PON',day:'Wed',start:1,end:3,room:'J22'},
+        {id:'KIT_TNPW2_C01',dept:'KIT/TNPW2',code:'KIT/TNPW2-C/01',type:'C',teacher:'PON',day:'Wed',start:3,end:5,room:'J22'},
+        {id:'KIT_TNPW2_P01',dept:'KIT/TNPW2',code:'KIT/TNPW2-P/01',type:'P',teacher:'PON',day:'Wed',start:5,end:7,room:'J1'},
+    ];
+
+    const DEPT_COLORS = {
+        'KAL/OA2':  {accent:'#f7c94f',bg:'rgba(247,201,79,.10)',border:'rgba(247,201,79,.4)'},
+        'KIT/IOT':  {accent:'#4ff7a0',bg:'rgba(79,247,160,.08)',border:'rgba(79,247,160,.35)'},
+        'KIT/PSIT2':{accent:'#a04ff7',bg:'rgba(160,79,247,.09)',border:'rgba(160,79,247,.35)'},
+        'KIT/RIRP': {accent:'#f74f4f',bg:'rgba(247,79,79,.09)',border:'rgba(247,79,79,.35)'},
+        'KIT/RPRO': {accent:'#4fc3f7',bg:'rgba(79,195,247,.09)',border:'rgba(79,195,247,.35)'},
+        'KIT/TNPW2':{accent:'#f74fb8',bg:'rgba(247,79,184,.09)',border:'rgba(247,79,184,.35)'},
+    };
+
+    let selected = new Set();
+    let openDepts = new Set();
+
+    function groupByDept(){
+        const g={};
+        COURSES.forEach(c=>{if(!g[c.dept])g[c.dept]=[];g[c.dept].push(c);});
+        return g;
+    }
+
+    function assignLanes(dayCourses) {
+        const sorted = [...dayCourses].sort((a,b) => a.start - b.start);
+        const lanes = [];
+        const assignment = new Map();
+        for (const c of sorted) {
+            let placed = false;
+            for (let l = 0; l < lanes.length; l++) {
+                if (lanes[l] <= c.start) {
+                    assignment.set(c.id, l);
+                    lanes[l] = c.end;
+                    placed = true;
+                    break;
+                }
+            }
+            if (!placed) {
+                assignment.set(c.id, lanes.length);
+                lanes.push(c.end);
+            }
+        }
+        return { assignment, numLanes: lanes.length };
+    }
+
+    function makeCardHTML(course) {
+        const col = DEPT_COLORS[course.dept] || {accent:'#aaa',bg:'rgba(170,170,170,.08)',border:'rgba(170,170,170,.3)'};
+        const isLecture = course.type === 'P';
+        const cardClass = isLecture ? 'card-lecture' : 'card-seminar';
+        const tagClass  = isLecture ? 'tag-lecture'  : 'tag-seminar';
+        const tagLabel  = isLecture ? '▪ prednaska'  : '◦ cviko';
+        const cardStyle = `background:${col.bg};border-color:${col.border};border-left-color:${col.accent};`;
+        const stripe    = isLecture ? `<div class="top-stripe" style="background:${col.accent}"></div>` : '';
+        return `<div class="event-card ${cardClass}" style="${cardStyle}" onclick="removeCourse('${course.id}')" title="Click to remove">
+    ${stripe}
+    <span class="card-top-tag ${tagClass}">${tagLabel}</span>
+    <div class="event-code" style="color:${col.accent}">${course.code}</div>
+    <div class="event-room">${course.room} · ${course.teacher}</div>
+  </div>`;
+    }
+
+    function renderGrid() {
+        const grid = document.getElementById('scheduleGrid');
+        const sel = COURSES.filter(c => selected.has(c.id));
+
+        if (!sel.length) {
+            grid.innerHTML = `<div class="empty-schedule"><div class="empty-icon">📅</div><div class="empty-text">select courses from the sidebar</div></div>`;
+            return;
+        }
+
+        const N = TIME_SLOTS.length;
+        const colTemplate = `52px repeat(${N}, minmax(60px,1fr))`;
+
+        let html = `<div class="schedule-grid" style="grid-template-columns:${colTemplate}">`;
+        html += `<div class="grid-header"></div>`;
+        TIME_SLOTS.forEach(t => { html += `<div class="grid-header">${t}</div>`; });
+
+        DAYS.forEach(day => {
+            const dayCourses = sel.filter(c => c.day === day);
+
+            if (!dayCourses.length) {
+                html += `<div class="day-label">${day}</div>`;
+                for (let i = 0; i < N; i++) html += `<div class="time-cell"></div>`;
+                return;
+            }
+
+            const { assignment, numLanes } = assignLanes(dayCourses);
+            html += `<div class="day-label" style="grid-row:span ${numLanes}">${day}</div>`;
+
+            for (let lane = 0; lane < numLanes; lane++) {
+                const laneCourses = dayCourses.filter(c => assignment.get(c.id) === lane)
+                    .sort((a,b) => a.start - b.start);
+                let si = 0;
+                while (si < N) {
+                    const course = laneCourses.find(c => c.start === si);
+                    if (course) {
+                        const span = course.end - course.start;
+                        html += `<div class="time-cell" style="grid-column:span ${span}">${makeCardHTML(course)}</div>`;
+                        si += span;
+                    } else {
+                        const next = laneCourses.find(c => c.start > si);
+                        const nextStart = next ? next.start : N;
+                        for (let k = 0; k < nextStart - si; k++) html += `<div class="time-cell"></div>`;
+                        si = nextStart;
+                    }
+                }
+            }
+        });
+
+        html += `</div>`;
+        grid.innerHTML = html;
+    }
+
+    function removeCourse(id){ selected.delete(id); render(); }
+    function clearAll(){ selected.clear(); render(); }
+
+    function renderStats(){
+        document.getElementById('selectedCount').textContent = selected.size + ' selected';
+    }
+
+    function renderSidebar(filter=''){
+        const groups = groupByDept();
+        const list = document.getElementById('courseList');
+        list.innerHTML = '';
+        Object.entries(groups).forEach(([dept,courses]) => {
+            const filtered = courses.filter(c => !filter || c.code.toLowerCase().includes(filter) || c.teacher.toLowerCase().includes(filter) || dept.toLowerCase().includes(filter));
+            if (!filtered.length) return;
+            const col = DEPT_COLORS[dept] || {accent:'#aaa'};
+            const selCount = filtered.filter(c => selected.has(c.id)).length;
+            const isOpen = openDepts.has(dept) || !!filter;
+            const wrap = document.createElement('div');
+            wrap.className = 'dept-accordion';
+            const trigger = document.createElement('button');
+            trigger.className = 'dept-trigger' + (isOpen ? ' open' : '');
+            trigger.innerHTML = `<div class="dept-dot" style="background:${col.accent}"></div><span class="dept-name">${dept}</span><span class="dept-badge ${selCount?'has-selected':''}">${selCount}/${filtered.length}</span><span class="chevron">▼</span>`;
+            trigger.onclick = () => { if(openDepts.has(dept)) openDepts.delete(dept); else openDepts.add(dept); renderSidebar(document.getElementById('searchInput').value.toLowerCase().trim()); };
+            wrap.appendChild(trigger);
+            const body = document.createElement('div');
+            body.className = 'dept-body' + (isOpen ? ' open' : '');
+            const addSection = (items, label, dotClass) => {
+                if (!items.length) return;
+                const sec = document.createElement('div');
+                sec.className = 'type-section-label';
+                sec.style.color = label === 'LECTURES' ? 'var(--accent3)' : 'var(--accent)';
+                sec.innerHTML = `<div class="${dotClass}"></div>${label}`;
+                body.appendChild(sec);
+                items.forEach(c => {
+                    const item = document.createElement('div');
+                    item.className = 'course-item' + (selected.has(c.id) ? ' selected' : '');
+                    item.style.borderLeftColor = selected.has(c.id) ? col.accent : 'transparent';
+                    item.innerHTML = `<div class="course-code" style="color:${col.accent}">${c.code}</div><div class="course-meta"><span>${c.day} · ${TIME_SLOTS[c.start]}–${TIME_SLOTS[c.end]||'~'}</span><span>· ${c.room} · ${c.teacher}</span></div>`;
+                    item.onclick = () => { if(selected.has(c.id)) selected.delete(c.id); else selected.add(c.id); render(); };
+                    body.appendChild(item);
+                });
+            };
+            addSection(filtered.filter(c => c.type === 'P'), 'přednáška', 'type-dot-lec');
+            addSection(filtered.filter(c => c.type === 'C'), 'cviko', 'type-dot-sem');
+            wrap.appendChild(body);
+            list.appendChild(wrap);
+        });
+    }
+
+    function render(filter){
+        if(filter === undefined) filter = document.getElementById('searchInput').value.toLowerCase().trim();
+        renderSidebar(filter); renderGrid(); renderStats();
+    }
+    document.getElementById('searchInput').addEventListener('input', e => render(e.target.value.toLowerCase().trim()));
+    render('');
+</script>
+</body>
+</html>
