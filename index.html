@@ -31,92 +31,125 @@
 </div>
 
 <script>
-    // Split into starts and ends to accurately reflect 45-minute blocks
-   // Split into starts and ends to accurately reflect 45-minute blocks
     const TIME_STARTS = ['7:25','8:15','9:05','9:55','10:45','11:35','12:25','13:15','14:05','14:55','15:45','16:35','17:25','18:15','19:05','19:55'];
     const TIME_ENDS   = ['8:10','9:00','9:50','10:40','11:30','12:20','13:10','14:00','14:50','15:40','16:30','17:20','18:10','19:00','19:50','20:40'];
-    const DAYS = ['Mon','Tue','Wed','Thu','Fri','Sat'];
+    const DAYS = ['Mon','Tue','Wed','Thu'];
 
     const COURSES = [
         // KIKM/DBS
-        {id:'KIKM_DBS_C13',dept:'KIKM/DBS',code:'KIKM/DBS-C/13',type:'C',teacher:'XVO',day:'Tue',start:1,end:3,room:'J23'},
+        {id:'KIKM_DBS_C13',dept:'KIKM/DBS',code:'KIKM/DBS-C/13',type:'C',teacher:'Vondra',day:'Tue',start:1,end:3,room:'J23'},
         {id:'KIKM_DBS_C11',dept:'KIKM/DBS',code:'KIKM/DBS-C/11',type:'C',teacher:'VAP',day:'Tue',start:1,end:3,room:'J22'},
-        {id:'KIKM_DBS_C12',dept:'KIKM/DBS',code:'KIKM/DBS-C/12',type:'C',teacher:'XVO',day:'Wed',start:13,end:15,room:'J22'},
+        {id:'KIKM_DBS_C12',dept:'KIKM/DBS',code:'KIKM/DBS-C/12',type:'C',teacher:'Vondra',day:'Wed',start:13,end:15,room:'J22'},
         {id:'KIKM_DBS_C06',dept:'KIKM/DBS',code:'KIKM/DBS-C/06',type:'C',teacher:'LNM',day:'Wed',start:13,end:15,room:'J23'},
         {id:'KIKM_DBS_C05',dept:'KIKM/DBS',code:'KIKM/DBS-C/05',type:'C',teacher:'LNM',day:'Wed',start:4,end:6,room:'J10'},
         {id:'KIKM_DBS_C02',dept:'KIKM/DBS',code:'KIKM/DBS-C/02',type:'C',teacher:'LNM',day:'Wed',start:6,end:8,room:'J10'},
         {id:'KIKM_DBS_C04',dept:'KIKM/DBS',code:'KIKM/DBS-C/04',type:'C',teacher:'LNM',day:'Wed',start:9,end:11,room:'J23'},
         {id:'KIKM_DBS_C03',dept:'KIKM/DBS',code:'KIKM/DBS-C/03',type:'C',teacher:'LNM',day:'Wed',start:11,end:13,room:'J23'},
-        {id:'KIKM_DBS_C01',dept:'KIKM/DBS',code:'KIKM/DBS-C/01',type:'C',teacher:'BOR',day:'Wed',start:13,end:15,room:'J21'},
-        {id:'KIKM_DBS_C14',dept:'KIKM/DBS',code:'KIKM/DBS-C/14',type:'C',teacher:'POU',day:'Thu',start:3,end:5,room:'J20'},
+        {id:'KIKM_DBS_C01',dept:'KIKM/DBS',code:'KIKM/DBS-C/01',type:'C',teacher:'Borkovcová',day:'Wed',start:13,end:15,room:'J21'},
+        {id:'KIKM_DBS_C14',dept:'KIKM/DBS',code:'KIKM/DBS-C/14',type:'C',teacher:'Poulová',day:'Thu',start:3,end:5,room:'J20'},
         {id:'KIKM_DBS_C10',dept:'KIKM/DBS',code:'KIKM/DBS-C/10',type:'C',teacher:'VEL',day:'Thu',start:7,end:9,room:'J22'},
         {id:'KIKM_DBS_C09',dept:'KIKM/DBS',code:'KIKM/DBS-C/09',type:'C',teacher:'VEL',day:'Thu',start:9,end:11,room:'J8'},
         {id:'KIKM_DBS_C08',dept:'KIKM/DBS',code:'KIKM/DBS-C/08',type:'C',teacher:'VEL',day:'Thu',start:12,end:14,room:'J23'},
-        {id:'KIKM_DBS_P01',dept:'KIKM/DBS',code:'KIKM/DBS-P/01',type:'P',teacher:'POU',day:'Thu',start:5,end:7,room:'J1'},
+        {id:'KIKM_DBS_P01',dept:'KIKM/DBS',code:'KIKM/DBS-P/01',type:'P',teacher:'Poulová',day:'Thu',start:5,end:7,room:'J1'},
         {id:'KIKM_DBS_C07',dept:'KIKM/DBS',code:'KIKM/DBS-C/07',type:'C',teacher:'TEB',day:'Thu',start:12,end:14,room:'J22'},
 
         // KIT/DSFA
-        {id:'KIT_DSFA_C03',dept:'KIT/DSFA',code:'KIT/DSFA-C/03',type:'C',teacher:'ALM',day:'Tue',start:12,end:14,room:'J7'},
-        {id:'KIT_DSFA_C04',dept:'KIT/DSFA',code:'KIT/DSFA-C/04',type:'C',teacher:'ALM',day:'Tue',start:14,end:16,room:'J7'},
-        {id:'KIT_DSFA_P01',dept:'KIT/DSFA',code:'KIT/DSFA-P/01',type:'P',teacher:'ALM',day:'Wed',start:10,end:12,room:'J7'},
-        {id:'KIT_DSFA_C01',dept:'KIT/DSFA',code:'KIT/DSFA-C/01',type:'C',teacher:'ALM',day:'Wed',start:12,end:14,room:'J7'},
-        {id:'KIT_DSFA_C02',dept:'KIT/DSFA',code:'KIT/DSFA-C/02',type:'C',teacher:'ALM',day:'Wed',start:14,end:16,room:'J7'},
+        {id:'KIT_DSFA_C03',dept:'KIT/DSFA',code:'KIT/DSFA-C/03',type:'C',teacher:'Almer',day:'Tue',start:12,end:14,room:'J7'},
+        {id:'KIT_DSFA_C04',dept:'KIT/DSFA',code:'KIT/DSFA-C/04',type:'C',teacher:'Almer',day:'Tue',start:14,end:16,room:'J7'},
+        {id:'KIT_DSFA_P01',dept:'KIT/DSFA',code:'KIT/DSFA-P/01',type:'P',teacher:'Almer',day:'Wed',start:10,end:12,room:'J7'},
+        {id:'KIT_DSFA_C01',dept:'KIT/DSFA',code:'KIT/DSFA-C/01',type:'C',teacher:'Almer',day:'Wed',start:12,end:14,room:'J7'},
+        {id:'KIT_DSFA_C02',dept:'KIT/DSFA',code:'KIT/DSFA-C/02',type:'C',teacher:'Almer',day:'Wed',start:14,end:16,room:'J7'},
 
         // KAL/OA1
-        {id:'KAL_OA1_C12',dept:'KAL/OA1',code:'KAL/OA1-C/12',type:'C',teacher:'ZUM',day:'Mon',start:1,end:3,room:'J27'},
-        {id:'KAL_OA1_C10',dept:'KAL/OA1',code:'KAL/OA1-C/10',type:'C',teacher:'ZUM',day:'Mon',start:3,end:5,room:'J27'},
-        {id:'KAL_OA1_C09',dept:'KAL/OA1',code:'KAL/OA1-C/09',type:'C',teacher:'ZUM',day:'Mon',start:5,end:7,room:'J27'},
-        {id:'KAL_OA1_C11',dept:'KAL/OA1',code:'KAL/OA1-C/11',type:'C',teacher:'ZUM',day:'Mon',start:7,end:9,room:'A203'},
-        {id:'KAL_OA1_C13',dept:'KAL/OA1',code:'KAL/OA1-C/13',type:'C',teacher:'ZUM',day:'Mon',start:9,end:11,room:'A203'},
-        {id:'KAL_OA1_C08',dept:'KAL/OA1',code:'KAL/OA1-C/08',type:'C',teacher:'WHI',day:'Mon',start:6,end:8,room:'J28'},
-        {id:'KAL_OA1_C01',dept:'KAL/OA1',code:'KAL/OA1-C/01',type:'C',teacher:'ZAL',day:'Mon',start:2,end:4,room:'A203'},
-        {id:'KAL_OA1_C06',dept:'KAL/OA1',code:'KAL/OA1-C/06',type:'C',teacher:'ZAL',day:'Mon',start:4,end:6,room:'J3'},
-        {id:'KAL_OA1_C03',dept:'KAL/OA1',code:'KAL/OA1-C/03',type:'C',teacher:'ZAL',day:'Mon',start:6,end:8,room:'J3'},
-        {id:'KAL_OA1_C05',dept:'KAL/OA1',code:'KAL/OA1-C/05',type:'C',teacher:'ZAL',day:'Tue',start:4,end:6,room:'J6'},
-        {id:'KAL_OA1_C07',dept:'KAL/OA1',code:'KAL/OA1-C/07',type:'C',teacher:'WHI',day:'Tue',start:9,end:11,room:'J6'},
-        {id:'KAL_OA1_C04',dept:'KAL/OA1',code:'KAL/OA1-C/04',type:'C',teacher:'ZAL',day:'Wed',start:6,end:8,room:'A203'},
-        {id:'KAL_OA1_C02',dept:'KAL/OA1',code:'KAL/OA1-C/02',type:'C',teacher:'ZAL',day:'Wed',start:8,end:10,room:'A203'},
+        {id:'KAL_OA1_C12',dept:'KAL/OA1',code:'KAL/OA1-C/12',type:'C',teacher:'Zumrová',day:'Mon',start:1,end:3,room:'J27'},
+        {id:'KAL_OA1_C10',dept:'KAL/OA1',code:'KAL/OA1-C/10',type:'C',teacher:'Zumrová',day:'Mon',start:3,end:5,room:'J27'},
+        {id:'KAL_OA1_C09',dept:'KAL/OA1',code:'KAL/OA1-C/09',type:'C',teacher:'Zumrová',day:'Mon',start:5,end:7,room:'J27'},
+        {id:'KAL_OA1_C11',dept:'KAL/OA1',code:'KAL/OA1-C/11',type:'C',teacher:'Zumrová',day:'Mon',start:7,end:9,room:'A203'},
+        {id:'KAL_OA1_C13',dept:'KAL/OA1',code:'KAL/OA1-C/13',type:'C',teacher:'Zumrová',day:'Mon',start:9,end:11,room:'A203'},
+        {id:'KAL_OA1_C08',dept:'KAL/OA1',code:'KAL/OA1-C/08',type:'C',teacher:'White',day:'Mon',start:6,end:8,room:'J28'},
+        {id:'KAL_OA1_C01',dept:'KAL/OA1',code:'KAL/OA1-C/01',type:'C',teacher:'Zálišová',day:'Mon',start:2,end:4,room:'A203'},
+        {id:'KAL_OA1_C06',dept:'KAL/OA1',code:'KAL/OA1-C/06',type:'C',teacher:'Zálišová',day:'Mon',start:4,end:6,room:'J3'},
+        {id:'KAL_OA1_C03',dept:'KAL/OA1',code:'KAL/OA1-C/03',type:'C',teacher:'Zálišová',day:'Mon',start:6,end:8,room:'J3'},
+        {id:'KAL_OA1_C05',dept:'KAL/OA1',code:'KAL/OA1-C/05',type:'C',teacher:'Zálišová',day:'Tue',start:4,end:6,room:'J6'},
+        {id:'KAL_OA1_C07',dept:'KAL/OA1',code:'KAL/OA1-C/07',type:'C',teacher:'White',day:'Tue',start:9,end:11,room:'J6'},
+        {id:'KAL_OA1_C04',dept:'KAL/OA1',code:'KAL/OA1-C/04',type:'C',teacher:'Zálišová',day:'Wed',start:6,end:8,room:'A203'},
+        {id:'KAL_OA1_C02',dept:'KAL/OA1',code:'KAL/OA1-C/02',type:'C',teacher:'Zálišová',day:'Wed',start:8,end:10,room:'A203'},
 
         // KIT/PSIT1
-        {id:'KIT_PSIT1_C12',dept:'KIT/PSIT1',code:'KIT/PSIT1-C/12',type:'C',teacher:'XUP',day:'Mon',start:5,end:7,room:'J22'},
+        {id:'KIT_PSIT1_C12',dept:'KIT/PSIT1',code:'KIT/PSIT1-C/12',type:'C',teacher:'Urbaník',day:'Mon',start:5,end:7,room:'J22'},
         {id:'KIT_PSIT1_C05',dept:'KIT/PSIT1',code:'KIT/PSIT1-C/05',type:'C',teacher:'MLS',day:'Mon',start:2,end:4,room:'J21'},
         {id:'KIT_PSIT1_C06',dept:'KIT/PSIT1',code:'KIT/PSIT1-C/06',type:'C',teacher:'MLS',day:'Mon',start:4,end:6,room:'J21'},
-        {id:'KIT_PSIT1_C11',dept:'KIT/PSIT1',code:'KIT/PSIT1-C/11',type:'C',teacher:'XUP',day:'Mon',start:11,end:13,room:'J20'},
-        {id:'KIT_PSIT1_C09',dept:'KIT/PSIT1',code:'KIT/PSIT1-C/09',type:'C',teacher:'XUP',day:'Mon',start:13,end:15 ,room:'J22'},
-        {id:'KIT_PSIT1_C02',dept:'KIT/PSIT1',code:'KIT/PSIT1-C/02',type:'C',teacher:'MIL',day:'Tue',start:6,end:8,room:'J20'},
-        {id:'KIT_PSIT1_C03',dept:'KIT/PSIT1',code:'KIT/PSIT1-C/03',type:'C',teacher:'MIL',day:'Tue',start:8,end:10,room:'J20'},
-        {id:'KIT_PSIT1_C04',dept:'KIT/PSIT1',code:'KIT/PSIT1-C/04',type:'C',teacher:'MIL',day:'Tue',start:10,end:12,room:'J20'},
-        {id:'KIT_PSIT1_C10',dept:'KIT/PSIT1',code:'KIT/PSIT1-C/10',type:'C',teacher:'XUP',day:'Tue',start:12,end:14,room:'J21'},
+        {id:'KIT_PSIT1_C11',dept:'KIT/PSIT1',code:'KIT/PSIT1-C/11',type:'C',teacher:'Urbaník',day:'Mon',start:11,end:13,room:'J20'},
+        {id:'KIT_PSIT1_C09',dept:'KIT/PSIT1',code:'KIT/PSIT1-C/09',type:'C',teacher:'Urbaník',day:'Mon',start:13,end:15 ,room:'J22'},
+        {id:'KIT_PSIT1_C02',dept:'KIT/PSIT1',code:'KIT/PSIT1-C/02',type:'C',teacher:'Milanov',day:'Tue',start:6,end:8,room:'J20'},
+        {id:'KIT_PSIT1_C03',dept:'KIT/PSIT1',code:'KIT/PSIT1-C/03',type:'C',teacher:'Milanov',day:'Tue',start:8,end:10,room:'J20'},
+        {id:'KIT_PSIT1_C04',dept:'KIT/PSIT1',code:'KIT/PSIT1-C/04',type:'C',teacher:'Milanov',day:'Tue',start:10,end:12,room:'J20'},
+        {id:'KIT_PSIT1_C10',dept:'KIT/PSIT1',code:'KIT/PSIT1-C/10',type:'C',teacher:'Urbaník',day:'Tue',start:12,end:14,room:'J21'},
         {id:'KIT_PSIT1_C01',dept:'KIT/PSIT1',code:'KIT/PSIT1-C/01',type:'C',teacher:'MIP',day:'Tue',start:7,end:9,room:'J9'},
-        {id:'KIT_PSIT1_C14',dept:'KIT/PSIT1',code:'KIT/PSIT1-C/14',type:'C',teacher:'XUP',day:'Wed',start:5,end:7,room:'J9'},
+        {id:'KIT_PSIT1_C14',dept:'KIT/PSIT1',code:'KIT/PSIT1-C/14',type:'C',teacher:'Urbaník',day:'Wed',start:5,end:7,room:'J9'},
         {id:'KIT_PSIT1_P01',dept:'KIT/PSIT1',code:'KIT/PSIT1-P/01',type:'P',teacher:'NEZ',day:'Wed',start:2,end:4,room:'J1'},
         {id:'KIT_PSIT1_C08',dept:'KIT/PSIT1',code:'KIT/PSIT1-C/08',type:'C',teacher:'NEZ',day:'Wed',start:4,end:6,room:'J22'},
         {id:'KIT_PSIT1_C07',dept:'KIT/PSIT1',code:'KIT/PSIT1-C/07',type:'C',teacher:'NEZ',day:'Wed',start:6,end:8,room:'J22'},
-        {id:'KIT_PSIT1_C13',dept:'KIT/PSIT1',code:'KIT/PSIT1-C/13',type:'C',teacher:'XUP',day:'Wed',start:11,end:13,room:'J9'},
+        {id:'KIT_PSIT1_C13',dept:'KIT/PSIT1',code:'KIT/PSIT1-C/13',type:'C',teacher:'Urbaník',day:'Wed',start:11,end:13,room:'J9'},
 
         // KIT/RBI
-        {id:'KIT_RBI_P01',dept:'KIT/RBI',code:'KIT/RBI-P/01',type:'P',teacher:'HOJ',day:'Tue',start:3,end:5,room:'J12'},
-        {id:'KIT_RBI_C01',dept:'KIT/RBI',code:'KIT/RBI-C/01',type:'C',teacher:'HOJ',day:'Tue',start:5,end:6,room:'J10'},
-        {id:'KIT_RBI_C03',dept:'KIT/RBI',code:'KIT/RBI-C/03',type:'C',teacher:'HOJ',day:'Tue',start:6,end:7,room:'J10'},
-        {id:'KIT_RBI_C02',dept:'KIT/RBI',code:'KIT/RBI-C/02',type:'C',teacher:'HOJ',day:'Tue',start:7,end:8,room:'J10'},
+        {id:'KIT_RBI_P01',dept:'KIT/RBI',code:'KIT/RBI-P/01',type:'P',teacher:'Horálek',day:'Tue',start:3,end:5,room:'J12'},
+        {id:'KIT_RBI_C01',dept:'KIT/RBI',code:'KIT/RBI-C/01',type:'C',teacher:'Horálek',day:'Tue',start:5,end:6,room:'J10'},
+        {id:'KIT_RBI_C03',dept:'KIT/RBI',code:'KIT/RBI-C/03',type:'C',teacher:'Horálek',day:'Tue',start:6,end:7,room:'J10'},
+        {id:'KIT_RBI_C02',dept:'KIT/RBI',code:'KIT/RBI-C/02',type:'C',teacher:'Horálek',day:'Tue',start:7,end:8,room:'J10'},
 
         // KIKM/ZKZBS
-        {id:'KIKM_ZKZBS_P01',dept:'KIKM/ZKZBS',code:'KIKM/ZKZBS-P/01',type:'P',teacher:'MEDJ',day:'Mon',start:4,end:6,room:'J13'},
-        {id:'KIKM_ZKZBS_C01',dept:'KIKM/ZKZBS',code:'KIKM/ZKZBS-C/01',type:'C',teacher:'MEDJ',day:'Mon',start:6,end:8,room:'J21'},
-        {id:'KIKM_ZKZBS_C02',dept:'KIKM/ZKZBS',code:'KIKM/ZKZBS-C/02',type:'C',teacher:'MEDJ',day:'Mon',start:8,end:10,room:'J21'},
-        {id:'KIKM_ZKZBS_C03',dept:'KIKM/ZKZBS',code:'KIKM/ZKZBS-C/03',type:'C',teacher:'MEDJ',day:'Tue',start:1,end:3,room:'J21'},
+        {id:'KIKM_ZKZBS_P01',dept:'KIKM/ZKZBS',code:'KIKM/ZKZBS-P/01',type:'P',teacher:'Medková',day:'Mon',start:4,end:6,room:'J13'},
+        {id:'KIKM_ZKZBS_C01',dept:'KIKM/ZKZBS',code:'KIKM/ZKZBS-C/01',type:'C',teacher:'Medková',day:'Mon',start:6,end:8,room:'J21'},
+        {id:'KIKM_ZKZBS_C02',dept:'KIKM/ZKZBS',code:'KIKM/ZKZBS-C/02',type:'C',teacher:'Medková',day:'Mon',start:8,end:10,room:'J21'},
+        {id:'KIKM_ZKZBS_C03',dept:'KIKM/ZKZBS',code:'KIKM/ZKZBS-C/03',type:'C',teacher:'Medková',day:'Tue',start:1,end:3,room:'J21'},
 
         // KIKM/ZMI1
-        {id:'KIKM_ZMI1_P01',dept:'KIKM/ZMI1',code:'KIKM/ZMI1-P/01',type:'P',teacher:'BAU',day:'Mon',start:5,end:7,room:'J1'},
-        {id:'KIKM_ZMI1_C09',dept:'KIKM/ZMI1',code:'KIKM/ZMI1-C/09',type:'C',teacher:'BAU',day:'Mon',start:7,end:9,room:'J30'},
-        {id:'KIKM_ZMI1_C07',dept:'KIKM/ZMI1',code:'KIKM/ZMI1-C/07',type:'C',teacher:'BAU',day:'Mon',start:9,end:11,room:'J30'},
-        {id:'KIKM_ZMI1_C01',dept:'KIKM/ZMI1',code:'KIKM/ZMI1-C/01',type:'C',teacher:'MEDJ',day:'Tue',start:3,end:5,room:'J31'},
-        {id:'KIKM_ZMI1_C04',dept:'KIKM/ZMI1',code:'KIKM/ZMI1-C/04',type:'C',teacher:'TOJ',day:'Tue',start:5,end:7,room:'A204'},
-        {id:'KIKM_ZMI1_C02',dept:'KIKM/ZMI1',code:'KIKM/ZMI1-C/02',type:'C',teacher:'MEDJ',day:'Wed',start:2,end:4,room:'J3'},
-        {id:'KIKM_ZMI1_C03',dept:'KIKM/ZMI1',code:'KIKM/ZMI1-C/03',type:'C',teacher:'MEDJ',day:'Wed',start:4,end:6,room:'J3'},
-        {id:'KIKM_ZMI1_C08',dept:'KIKM/ZMI1',code:'KIKM/ZMI1-C/08',type:'C',teacher:'BAU',day:'Wed',start:11,end:13,room:'J31'},
-        {id:'KIKM_ZMI1_C06',dept:'KIKM/ZMI1',code:'KIKM/ZMI1-C/06',type:'C',teacher:'TOJ',day:'Thu',start:8,end:10,room:'J30'},
-        {id:'KIKM_ZMI1_C05',dept:'KIKM/ZMI1',code:'KIKM/ZMI1-C/05',type:'C',teacher:'TOJ',day:'Thu',start:10,end:12,room:'J30'},
+        {id:'KIKM_ZMI1_P01',dept:'KIKM/ZMI1',code:'KIKM/ZMI1-P/01',type:'P',teacher:'Bauer',day:'Mon',start:5,end:7,room:'J1'},
+        {id:'KIKM_ZMI1_C09',dept:'KIKM/ZMI1',code:'KIKM/ZMI1-C/09',type:'C',teacher:'Bauer',day:'Mon',start:7,end:9,room:'J30'},
+        {id:'KIKM_ZMI1_C07',dept:'KIKM/ZMI1',code:'KIKM/ZMI1-C/07',type:'C',teacher:'Bauer',day:'Mon',start:9,end:11,room:'J30'},
+        {id:'KIKM_ZMI1_C01',dept:'KIKM/ZMI1',code:'KIKM/ZMI1-C/01',type:'C',teacher:'Medková',day:'Tue',start:3,end:5,room:'J31'},
+        {id:'KIKM_ZMI1_C04',dept:'KIKM/ZMI1',code:'KIKM/ZMI1-C/04',type:'C',teacher:'Toman',day:'Tue',start:5,end:7,room:'A204'},
+        {id:'KIKM_ZMI1_C02',dept:'KIKM/ZMI1',code:'KIKM/ZMI1-C/02',type:'C',teacher:'Medková',day:'Wed',start:2,end:4,room:'J3'},
+        {id:'KIKM_ZMI1_C03',dept:'KIKM/ZMI1',code:'KIKM/ZMI1-C/03',type:'C',teacher:'Medková',day:'Wed',start:4,end:6,room:'J3'},
+        {id:'KIKM_ZMI1_C08',dept:'KIKM/ZMI1',code:'KIKM/ZMI1-C/08',type:'C',teacher:'Bauer',day:'Wed',start:11,end:13,room:'J31'},
+        {id:'KIKM_ZMI1_C06',dept:'KIKM/ZMI1',code:'KIKM/ZMI1-C/06',type:'C',teacher:'Toman',day:'Thu',start:8,end:10,room:'J30'},
+        {id:'KIKM_ZMI1_C05',dept:'KIKM/ZMI1',code:'KIKM/ZMI1-C/05',type:'C',teacher:'Toman',day:'Thu',start:10,end:12,room:'J30'},
+
+        // KE/MIEK1
+        {id:'KE_MIEK1_C04',dept:'KE/MIEK1',code:'KE/MIEK1-C/04',name:'Mikroekonomie 1',type:'C',teacher:'KRA',day:'Mon',start:8,end:10,room:'J28'},
+        {id:'KE_MIEK1_C13',dept:'KE/MIEK1',code:'KE/MIEK1-C/13',name:'Mikroekonomie 1',type:'C',teacher:'HOR',day:'Mon',start:10,end:12,room:'J27'},
+        {id:'KE_MIEK1_C06',dept:'KE/MIEK1',code:'KE/MIEK1-C/06',name:'Mikroekonomie 1',type:'C',teacher:'KRA',day:'Mon',start:10,end:12,room:'J28'},
+        {id:'KE_MIEK1_P02',dept:'KE/MIEK1',code:'KE/MIEK1-P/02',name:'Mikroekonomie 1',type:'P',teacher:'HED',day:'Tue',start:5,end:7,room:'J1'},
+        {id:'KE_MIEK1_C03',dept:'KE/MIEK1',code:'KE/MIEK1-C/03',name:'Mikroekonomie 1',type:'C',teacher:'HED',day:'Tue',start:7,end:9,room:'J27'},
+        {id:'KE_MIEK1_C08',dept:'KE/MIEK1',code:'KE/MIEK1-C/08',name:'Mikroekonomie 1',type:'C',teacher:'VYCH',day:'Wed',start:7,end:9,room:'J28'},
+        {id:'KE_MIEK1_C10',dept:'KE/MIEK1',code:'KE/MIEK1-C/10',name:'Mikroekonomie 1',type:'C',teacher:'VYCH',day:'Wed',start:12,end:14,room:'J28'},
+        {id:'KE_MIEK1_P01',dept:'KE/MIEK1',code:'KE/MIEK1-P/01',name:'Mikroekonomie 1',type:'P',teacher:'REZ',day:'Thu',start:1,end:3,room:'J1'},
+        {id:'KE_MIEK1_C07',dept:'KE/MIEK1',code:'KE/MIEK1-C/07',name:'Mikroekonomie 1',type:'C',teacher:'KRA',day:'Thu',start:3,end:5,room:'J26'},
+        {id:'KE_MIEK1_C01',dept:'KE/MIEK1',code:'KE/MIEK1-C/01',name:'Mikroekonomie 1',type:'C',teacher:'HED',day:'Thu',start:3,end:5,room:'J27'},
+        {id:'KE_MIEK1_C05',dept:'KE/MIEK1',code:'KE/MIEK1-C/05',name:'Mikroekonomie 1',type:'C',teacher:'KRA',day:'Thu',start:5,end:7,room:'J26'},
+        {id:'KE_MIEK1_C02',dept:'KE/MIEK1',code:'KE/MIEK1-C/02',name:'Mikroekonomie 1',type:'C',teacher:'HED',day:'Thu',start:5,end:7,room:'J27'},
+        {id:'KE_MIEK1_C09',dept:'KE/MIEK1',code:'KE/MIEK1-C/09',name:'Mikroekonomie 1',type:'C',teacher:'VYCH',day:'Thu',start:7,end:9,room:'J26'},
+        {id:'KE_MIEK1_C11',dept:'KE/MIEK1',code:'KE/MIEK1-C/11',name:'Mikroekonomie 1',type:'C',teacher:'VYCH',day:'Thu',start:9,end:11,room:'J26'},
+        {id:'KE_MIEK1_C12',dept:'KE/MIEK1',code:'KE/MIEK1-C/12',name:'Mikroekonomie 1',type:'C',teacher:'VYCH',day:'Thu',start:11,end:13,room:'J26'},
+
+        // KM/MRKTG
+        {id:'KM_MRKTG_P01',dept:'KM/MRKTG',code:'KM/MRKTG-P/01',name:'Marketing',type:'P',teacher:'HAL, XPE',day:'Tue',start:3,end:5,room:'J1'},
+        {id:'KM_MRKTG_C01',dept:'KM/MRKTG',code:'KM/MRKTG-C/01',name:'Marketing',type:'C',teacher:'HAL',day:'Tue',start:5,end:6,room:'J2'},
+        {id:'KM_MRKTG_C04',dept:'KM/MRKTG',code:'KM/MRKTG-C/04',name:'Marketing',type:'C',teacher:'HAL',day:'Tue',start:7,end:8,room:'J2'},
+        {id:'KM_MRKTG_C02',dept:'KM/MRKTG',code:'KM/MRKTG-C/02',name:'Marketing',type:'C',teacher:'HAL',day:'Tue',start:8,end:9,room:'J2'},
+        {id:'KM_MRKTG_C03',dept:'KM/MRKTG',code:'KM/MRKTG-C/03',name:'Marketing',type:'C',teacher:'HAL',day:'Tue',start:9,end:10,room:'J2'},
+        {id:'KM_MRKTG_C07',dept:'KM/MRKTG',code:'KM/MRKTG-C/07',name:'Marketing',type:'C',teacher:'XPE',day:'Wed',start:4,end:5,room:'J31'},
+        {id:'KM_MRKTG_C08',dept:'KM/MRKTG',code:'KM/MRKTG-C/08',name:'Marketing',type:'C',teacher:'XPE',day:'Wed',start:5,end:6,room:'J31'},
+        {id:'KM_MRKTG_C05',dept:'KM/MRKTG',code:'KM/MRKTG-C/05',name:'Marketing',type:'C',teacher:'XPE',day:'Wed',start:6,end:7,room:'J31'},
+        {id:'KM_MRKTG_C06',dept:'KM/MRKTG',code:'KM/MRKTG-C/06',name:'Marketing',type:'C',teacher:'XPE',day:'Thu',start:1,end:2,room:'J15'},
+
+        // KIT/TESY2
+        {id:'KIT_TESY2_P01',dept:'KIT/TESY2',code:'KIT/TESY2-P/01',name:'Technické systémy 2',type:'P',teacher:'BUR',day:'Mon',start:1,end:2,room:'J13'},
+        {id:'KIT_TESY2_C01',dept:'KIT/TESY2',code:'KIT/TESY2-C/01',name:'Technické systémy 2',type:'C',teacher:'BUR',day:'Mon',start:2,end:4,room:'J20'},
+        {id:'KIT_TESY2_C02',dept:'KIT/TESY2',code:'KIT/TESY2-C/02',name:'Technické systémy 2',type:'C',teacher:'XZA',day:'Mon',start:11,end:13,room:'J23'},
+        {id:'KIT_TESY2_C03',dept:'KIT/TESY2',code:'KIT/TESY2-C/03',name:'Technické systémy 2',type:'C',teacher:'XZA',day:'Mon',start:13,end:15,room:'J23'},
+        {id:'KIT_TESY2_C04',dept:'KIT/TESY2',code:'KIT/TESY2-C/04',name:'Technické systémy 2',type:'C',teacher:'XZA',day:'Thu',start:13,end:15,room:'J10'}
     ];
 
     const DEPT_COLORS = {
@@ -126,9 +159,14 @@
         'KIT/PSIT1': {accent:'#f74f4f',bg:'rgba(247,79,79,.09)',border:'rgba(247,79,79,.35)'},
         'KIT/RBI':   {accent:'#4fc3f7',bg:'rgba(79,195,247,.09)',border:'rgba(79,195,247,.35)'},
         'KIKM/ZKZBS':{accent:'#f74fb8',bg:'rgba(247,79,184,.09)',border:'rgba(247,79,184,.35)'},
+        'KIKM/ZMI1':{accent:'#f74fb8',bg:'rgba(287,99,84,.59)',border:'rgba(247,79,184,.35)'},
+        'KE/MIEK1':  {accent:'#f78e4f',bg:'rgba(247,142,79,.09)',border:'rgba(247,142,79,.35)'},
+        'KM/MRKTG':  {accent:'#f7eb4f',bg:'rgba(247,235,79,.09)',border:'rgba(247,235,79,.35)'},
+        'KIT/TESY2': {accent:'#f74f4f',bg:'rgba(247,79,79,.09)',border:'rgba(247,79,79,.35)'}
+
     };
 
-    // Implemented LocalStorage to save selections across reloads
+    //LocalStorage
     let selected = new Set(JSON.parse(localStorage.getItem('scheduleSelection') || '[]'));
     let openDepts = new Set();
 
@@ -143,7 +181,7 @@
     }
 
     function assignLanes(dayCourses) {
-        // Tweak: if courses start at the same time, place the longer one first for cleaner grid packing
+        //courses not overlapping
         const sorted = [...dayCourses].sort((a,b) => (a.start - b.start) || ((b.end - b.start) - (a.end - a.start)));
         const lanes = [];
         const assignment = new Map();
