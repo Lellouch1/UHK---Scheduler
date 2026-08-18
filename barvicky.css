@@ -60,6 +60,45 @@ header{
     color:var(--text2);
 }
 
+.category-accordion{
+    border-bottom:1px solid var(--border);
+}
+.category-trigger{
+    width:100%;
+    background:var(--surface2);
+    border:none;
+    cursor:pointer;
+    padding:14px 16px;
+    display:flex;
+    align-items:center;
+    gap:10px;
+    transition:background .15s;
+    text-align:left;
+}
+.category-trigger:hover{
+    background:var(--surface);
+}
+.category-name{
+    font-family:var(--sans);
+    font-size:.82rem;
+    font-weight:800;
+    letter-spacing:.04em;
+    text-transform:uppercase;
+    color:var(--text);
+    flex:1;
+}
+.category-trigger .chevron{
+    color:var(--accent2);
+}
+.category-body{
+    max-height:0;
+    overflow:hidden;
+    transition:max-height .25s ease;
+}
+.category-body.open{
+    max-height:6000px;
+}
+
 .dept-accordion{
     border-bottom:1px solid var(--border);
 }
