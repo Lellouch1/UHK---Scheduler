@@ -12,6 +12,22 @@ function saveSelection() {
 }
 
 // ---- Helpers -----------------------------------------------------------
+function creditsFor(depts) {
+  // Credits are earned once per subject (dept), not per selected session -
+  // picking both a P and a C slot for the same subject still counts once.
+  return depts.reduce((sum, d) => sum + (typeof DEPT_CREDITS !== 'undefined' ? (DEPT_CREDITS[d] || 0) : 0), 0);
+}
+
+function selectedDeptsIn(depts) {
+  const selectedDepts = new Set(COURSES.filter(c => selected.has(c.id)).map(c => c.dept));
+  return depts.filter(d => selectedDepts.has(d));
+}
+
+function totalCredits() {
+  const allDepts = [...new Set(COURSES.map(c => c.dept))];
+  return creditsFor(selectedDeptsIn(allDepts));
+}
+
 function groupByDept() {
   const g = {};
   COURSES.forEach(c => { if (!g[c.dept]) g[c.dept] = []; g[c.dept].push(c); });
@@ -115,6 +131,7 @@ function clearAll() { selected.clear(); saveSelection(); render(); }
 
 function renderStats() {
   document.getElementById('selectedCount').textContent = selected.size + ' selected';
+  document.getElementById('creditsCount').textContent = totalCredits() + ' credits';
 }
 
 // ---- Rendering: sidebar ---------------------------------------------------
@@ -199,13 +216,14 @@ function renderSidebar(filter = '') {
     });
     if (!catTotal) return;
 
+    const catCredits = creditsFor(selectedDeptsIn(depts));
     const isOpen = openCategories.has(catName) || !!filter;
     const catWrap = document.createElement('div');
     catWrap.className = 'category-accordion';
 
     const catTrigger = document.createElement('button');
     catTrigger.className = 'category-trigger' + (isOpen ? ' open' : '');
-    catTrigger.innerHTML = `<span class="category-name">${catName}</span><span class="dept-badge ${catSelected ? 'has-selected' : ''}">${catSelected}/${catTotal}</span><span class="chevron">▼</span>`;
+    catTrigger.innerHTML = `<span class="category-name">${catName}</span><span class="dept-badge ${catSelected ? 'has-selected' : ''}">${catSelected}/${catTotal}</span><span class="dept-badge credits-badge ${catCredits ? 'has-selected' : ''}">${catCredits} cr</span><span class="chevron">▼</span>`;
     catTrigger.onclick = () => {
       if (openCategories.has(catName)) openCategories.delete(catName); else openCategories.add(catName);
       renderSidebar(document.getElementById('searchInput').value.toLowerCase().trim());

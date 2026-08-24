@@ -216,6 +216,23 @@ const COURSES = [
   {id:'KM_PRINF_C04',dept:'KM/PRINF',code:'KM/PRINF-C/04',name:'Právo informačních technologií',type:'C',teacher:'MOR',day:'Mon',start:8,end:9,room:'J31'},
 ];
 
+const DEPT_CREDITS = {
+'KIKM/DBS':6,
+'KIT/DSFA':5,
+'KAL/OA1':2,
+'KIT/PSIT1':5,
+'KIT/RBI':5,
+'KIKM/ZKZBS':5,
+'KIKM/ZMI1':7,
+'KE/MIEK1':6,
+'KM/MRKTG':4,
+'KIT/TESY2':5,
+'KIT/SYSP':4,
+'KIKM/UPROM':3,
+'KIT/TPW1A':5,
+'KIT/UOMO':5,
+'KM/PRINF':4,
+}
 
 const DEPT_COLORS = {
   'KIKM/DBS':   {accent:'#f7c94f', bg:'rgba(247,201,79,.10)', border:'rgba(247,201,79,.4)'},
